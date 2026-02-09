@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GreenPlay</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      background: #16a34a;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #22c55e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>🎮 GreenPlay</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Wallet</h2>
+    <p>Coins: <span id="coins">0</span></p>
+    <button onclick="createAccount()">Create / Reset Account</button>
+  </div>
+
+  <div class="card">
+    <h2>Games</h2>
+    <button onclick="playLudo(100)">Play Ludo (100 coins)</button>
+    <button onclick="playLudo(500)">Play Ludo (500 coins)</button>
+  </div>
+
+</div>
+
+<script>
+  let coins = 0;
+
+  function createAccount() {
+    coins = 10000;
+    localStorage.setItem("greenplay_coins", coins);
+    updateCoins();
+    alert("Welcome! You received 10,000 coins.");
+  }
+
+  function loadAccount() {
+    const saved = localStorage.getItem("greenplay_coins");
+    if (saved) coins = parseInt(saved);
+    updateCoins();
+  }
+
+  function playLudo(stake) {
+    if (coins < stake) {
+      alert("Not enough coins!");
+      return;
+    }
+
+    const commission = Math.floor(stake * 0.2);
+    const reward = stake - commission;
+
+    coins = coins - stake + reward;
+    localStorage.setItem("greenplay_coins", coins);
+
+    alert(
+      "Ludo finished!\n\n" +
+      "Stake: " + stake + "\n" +
+      "Commission (20%): " + commission + "\n" +
+      "You received: " + reward
+    );
+
+    updateCoins();
+  }
+
+  function updateCoins() {
+    document.getElementById("coins").innerText = coins;
+  }
+
+  loadAccount();
+</script>
+
+</body>
+</html>
